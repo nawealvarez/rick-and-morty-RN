@@ -8,10 +8,10 @@ import {
   Text,
   View,
 } from 'react-native';
-const { height } = Dimensions.get('screen');
 import {CharNavProps} from '../CharactersParamList';
-
 import {getOneCharacter} from '../resolvers/Characters';
+
+const {height} = Dimensions.get('screen');
 
 function CharDetail({route}: CharNavProps<'CharDetail'>) {
   const {id} = route.params;
@@ -27,13 +27,9 @@ function CharDetail({route}: CharNavProps<'CharDetail'>) {
       ) : character ? (
         <View>
           <Image source={{uri: character.image}} style={styles.image} />
-
           <Text style={styles.text}>Name: {character.name}</Text>
-
           <Text style={styles.text}>Type: {character.type}</Text>
-
           <Text style={styles.text}>Gender: {character.gender}</Text>
-
           <Text style={styles.text}>Species: {character.species}</Text>
         </View>
       ) : (
@@ -47,14 +43,14 @@ const styles = StyleSheet.create({
   image: {
     height: height * 0.5,
     width: '100%',
-    marginTop: 50
+    marginTop: 50,
   },
   text: {
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
     alignSelf: 'center',
-    color: "green",
+    color: 'green',
     marginHorizontal: 10,
   },
 });

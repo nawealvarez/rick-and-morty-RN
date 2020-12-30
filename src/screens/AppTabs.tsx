@@ -1,11 +1,9 @@
 import React from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {AppParamList} from '../AppParamList';
-import {Text, View} from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { AppParamList } from '../AppParamList';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {CharactersStack} from './CharactersStack';
-
-interface AppTabsProps {}
+import { CharactersStack } from './CharactersStack';
+import { LocationsStack } from './LocationsStack';
 
 const Tabs = createBottomTabNavigator<AppParamList>();
 
@@ -16,15 +14,15 @@ const Tabs = createBottomTabNavigator<AppParamList>();
 //     </View>
 //   );
 // }
-function Locations() {
-  return (
-    <View>
-      <Text>Locations</Text>
-    </View>
-  );
-}
+// function Locations() {
+//   return (
+//     <View>
+//       <Text>Locations</Text>
+//     </View>
+//   );
+// }
 
-const AppTabs: React.FC<AppTabsProps> = ({}) => {
+const AppTabs: React.FC = () => {
   return (
     <Tabs.Navigator
       screenOptions={({route}) => ({
@@ -46,7 +44,7 @@ const AppTabs: React.FC<AppTabsProps> = ({}) => {
         inactiveTintColor: 'gray',
       }}>
       <Tabs.Screen name="Characters" component={CharactersStack} />
-      <Tabs.Screen name="Locations" component={Locations} />
+      <Tabs.Screen name="Locations" component={LocationsStack} />
     </Tabs.Navigator>
   );
 };

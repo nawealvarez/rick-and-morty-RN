@@ -9,7 +9,6 @@ import {errorHandler} from '../utils';
 import {getAllCharacters} from '../resolvers/Characters';
 import { CharNavProps } from '../CharactersParamList';
 
-
 function CharList ({navigation}: CharNavProps<'CharList'>)  {
 
   const [searchBy, setSearchBy] = useState('name');

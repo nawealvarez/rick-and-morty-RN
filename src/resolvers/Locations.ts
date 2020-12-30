@@ -6,6 +6,8 @@ const ALL_LOCATIONS = gql`
   query($name: String, $type: String, $page: Int) {
   locations(page: $page, filter: { name: $name, type: $type }) {
     info {
+      next
+      count
       pages
     }
       results {
@@ -25,14 +27,18 @@ const ONE_LOCATION= gql`
        type
        dimension
        residents {
-           name         
+           id
+           name
+           image         
             }
         }
   }
 `;
 
 export const getAllLocations = (by: string, search: string, page: number=1) => {
-  const results = useQuery<LocationsQuery>(ALL_LOCATIONS, {variables: {[by]: search, page}});
+  const results = useQuery<LocationsQuery>(ALL_LOCATIONS, 
+    {variables: {[by]: search, page},
+    fetchPolicy: "network-only" });
   return results;
 }
 

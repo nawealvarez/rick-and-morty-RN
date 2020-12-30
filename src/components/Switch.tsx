@@ -2,7 +2,7 @@ import React from 'react';
 import {Switch, Text, View} from 'react-native';
 
 interface Props {
-  checked?: boolean | undefined;
+  checked: boolean;
   handleSwitch: () => void;
   secondSearch: string;
 }
