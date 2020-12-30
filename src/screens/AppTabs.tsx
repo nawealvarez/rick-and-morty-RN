@@ -27,27 +27,24 @@ function Locations() {
 const AppTabs: React.FC<AppTabsProps> = ({}) => {
   return (
     <Tabs.Navigator
-    screenOptions={({ route }) => ({
-        tabBarIcon: ({color, size }) => {
+      screenOptions={({route}) => ({
+        tabBarIcon: ({color, size}) => {
           let iconName;
 
           if (route.name === 'Characters') {
             iconName = 'people';
           } else if (route.name === 'Locations') {
-            iconName = 'md-locate-sharp'
+            iconName = 'md-locate-sharp';
           }
-
-          // You can return any component that you like here!
           if (iconName !== undefined) {
-          return <Ionicons name={iconName} size={size} color={color} />;
+            return <Ionicons name={iconName} size={size} color={color} />;
           }
         },
       })}
       tabBarOptions={{
-        activeTintColor: 'tomato',
+        activeTintColor: 'green',
         inactiveTintColor: 'gray',
-      }}
-    >
+      }}>
       <Tabs.Screen name="Characters" component={CharactersStack} />
       <Tabs.Screen name="Locations" component={Locations} />
     </Tabs.Navigator>

@@ -2,12 +2,7 @@ import React from 'react';
 import {Button, StyleSheet, Text, View} from 'react-native';
 import { RootNavProps } from '../RootParamList';
 
-
-
-function Home({
-  navigation,
-  route
-}: RootNavProps<'Home'>) {
+function Home({navigation}: RootNavProps<'Home'>) {
   return (
     <View style={styles.container}>
       <Text>REACT NATIVE CHALLENGE</Text>

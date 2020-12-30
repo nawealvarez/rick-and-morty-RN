@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { useLazyQuery, useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/react-hooks";
 import { CharacterQuery, CharactersQuery} from '../interfaces';
 
 const ALL_CHARACTERS = gql`
@@ -33,7 +33,9 @@ const ONE_CHARACTER= gql`
 `;
 
 export const getAllCharacters = (by: string, search: string, page: number=1) => {
-  const results = useQuery<CharactersQuery>(ALL_CHARACTERS, {variables: {[by]: search, page}, fetchPolicy: "network-only" }  );
+  const results = useQuery<CharactersQuery>(ALL_CHARACTERS, 
+    {variables: {[by]: search, page}, 
+    fetchPolicy: "network-only" });
   return results;
 }
 

@@ -1,26 +1,16 @@
 import React, {useState} from 'react';
 import {ActivityIndicator, Text, View, FlatList} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import {Character} from '../interfaces';
 import CharCard from './CharCard';
 import SearchBox from './SearchBox';
 import SwitchComponent from './Switch';
+import {errorHandler} from '../utils';
 
 import {getAllCharacters} from '../resolvers/Characters';
-import { CharactersParamList, CharNavProps } from '../CharactersParamList';
-import { RootParamList } from '../RootParamList';
-import { createStackNavigator } from '@react-navigation/stack';
+import { CharNavProps } from '../CharactersParamList';
 
-// interface Props {
-//   characters: Character[];
-//   loading: boolean;
-//   error: Error; 
-// }
-
-const Stack = createStackNavigator<RootParamList>();
 
 function CharList ({navigation}: CharNavProps<'CharList'>)  {
-  //const navigation = useNavigation();
 
   const [searchBy, setSearchBy] = useState('name');
   const [searchField, setSearchField] = useState<string>('');
@@ -35,7 +25,7 @@ function CharList ({navigation}: CharNavProps<'CharList'>)  {
 
   const renderFooter = () => {
     if (data && loadingMore) {
-      return <ActivityIndicator />;
+      return <ActivityIndicator animating/>;
     } else {
       return null;
     }
@@ -85,7 +75,7 @@ function CharList ({navigation}: CharNavProps<'CharList'>)  {
       {loading ? (
         <ActivityIndicator animating size="large" />
       ) : error ? (
-        <Text>Error.</Text>
+        <Text style={{color: "red", textAlign: "center"}}>{errorHandler(error)}</Text>
       ) : characters && characters.length > 0 ? (
         <FlatList
           showsVerticalScrollIndicator={false}
@@ -93,7 +83,7 @@ function CharList ({navigation}: CharNavProps<'CharList'>)  {
           renderItem={({item}) => 
             { return (
             <CharCard key={item.id} character={item} 
-           
+              onPress={() => handleOnPress(item)}
             />)}}
           numColumns={2}
           ListHeaderComponent={

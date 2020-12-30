@@ -1,47 +1,62 @@
 import React from 'react';
-import { ActivityIndicator, ImageBackground, Text, View } from 'react-native';
-import { CharNavProps } from '../CharactersParamList';
-import { CharDetailParamList } from '../CharDetailParamList';
+import {
+  ActivityIndicator,
+  Dimensions,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+const { height } = Dimensions.get('screen');
+import {CharNavProps} from '../CharactersParamList';
 
-import { getOneCharacter } from "../resolvers/Characters";
+import {getOneCharacter} from '../resolvers/Characters';
 
-interface Props {
-  id: string;
-}
-
-function CharDetail  ({route}: CharNavProps<"CharDetail">) {
-  const {id} = route.params
-  const { data, loading, error } = getOneCharacter(id)
+function CharDetail({route}: CharNavProps<'CharDetail'>) {
+  const {id} = route.params;
+  const {data, loading, error} = getOneCharacter(id);
   const character = data?.character;
 
   return (
-    <>
+    <SafeAreaView>
       {loading ? (
         <ActivityIndicator />
       ) : error ? (
         <Text>Error.</Text>
       ) : character ? (
         <View>
-         
-            <Text>Name: {character.name}</Text>
-          
-            <Text>Type: {character.type}</Text>
-         
-            <Text>Gender: {character.gender}</Text>
-        
-            <Text>Species: {character.species}</Text>
-         
-          <ImageBackground
-           
-           
-            source={{uri: character.image}}
-          />
+          <Image source={{uri: character.image}} style={styles.image} />
+
+          <Text style={styles.text}>Name: {character.name}</Text>
+
+          <Text style={styles.text}>Type: {character.type}</Text>
+
+          <Text style={styles.text}>Gender: {character.gender}</Text>
+
+          <Text style={styles.text}>Species: {character.species}</Text>
         </View>
       ) : (
         <Text>No data.</Text>
       )}
-    </>
+    </SafeAreaView>
   );
-};
+}
+
+const styles = StyleSheet.create({
+  image: {
+    height: height * 0.5,
+    width: '100%',
+    marginTop: 50
+  },
+  text: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    alignSelf: 'center',
+    color: "green",
+    marginHorizontal: 10,
+  },
+});
 
 export default CharDetail;

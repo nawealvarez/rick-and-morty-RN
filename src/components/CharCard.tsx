@@ -1,26 +1,18 @@
 import React from 'react';
-import { Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Character } from "../interfaces";
-import CharDetail from "./CharDetail";
-
 
 interface Props {
   character: Character;
+  onPress: () => void;
 }
 
-const CharCard: React.FC<Props> = ({character}) => {
- 
+const CharCard: React.FC<Props> = ({character, onPress}) => {
 
   return (
     <>
-      
-          {/* <Image
-              source={{ uri: character.image }}
-              style={{ width: 200, height: 200 }}
-        
-          /> */}
         <TouchableOpacity style={styles.gridItem} 
-        //onPress={() => goToCharacter(itemData)} 
+        onPress={onPress}
         >
           <View style={styles.item}>
             <View style={styles.card}>
@@ -34,17 +26,6 @@ const CharCard: React.FC<Props> = ({character}) => {
             </View>
         </View>
         </TouchableOpacity>
-
-      {/* <Modal 
-        isOpen={toggleModal}
-        onRequestClose={() => setToggleModal(false)}
-        shouldCloseOnOverlayClick={false}
-      >
-        <button style={{ color: "red" }} onClick={() => setToggleModal(false)}>
-          x
-        </button>
-        <CharDetail id={character.id} />
-      </Modal> */}
     </>
   );
 };
