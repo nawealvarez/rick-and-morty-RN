@@ -17,7 +17,6 @@ const SearchBox: React.FC<Props> = ({ handleChange, search}) => {
       searchIcon={{size: 24}}
           onChangeText={(text) => handleChange(text)}
           onClear={() => handleChange('')}
-
           value={search}
        />)
 

@@ -1,5 +1,7 @@
-import { Paper, Typography } from "@material-ui/core";
-import Spinner from '../components/Spinner';
+import React from 'react';
+import { ActivityIndicator, ImageBackground, Text, View } from 'react-native';
+import { CharNavProps } from '../CharactersParamList';
+import { CharDetailParamList } from '../CharDetailParamList';
 
 import { getOneCharacter } from "../resolvers/Characters";
 
@@ -7,47 +9,36 @@ interface Props {
   id: string;
 }
 
-const CharDetail: React.FC<Props> = ({ id }) => {
-  const { data, loading, error } = getOneCharacter(id);
+function CharDetail  ({route}: CharNavProps<"CharDetail">) {
+  const {id} = route.params
+  const { data, loading, error } = getOneCharacter(id)
   const character = data?.character;
 
   return (
     <>
       {loading ? (
-        <Spinner />
+        <ActivityIndicator />
       ) : error ? (
-        <p>Error.</p>
+        <Text>Error.</Text>
       ) : character ? (
-        <Paper
-          elevation={10}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            width: "50vh",
-            margin: "auto"
-          }}
-        >
-          <Typography variant="subtitle1">
-            <b>Name: {character.name}</b>
-          </Typography>
-          <Typography variant="subtitle2">
-            <b>Type: {character.type}</b>
-          </Typography>
-          <Typography variant="subtitle2">
-            <b>Gender: {character.gender}</b>
-          </Typography>
-          <Typography variant="subtitle2">
-            <b>Species: {character.species}</b>
-          </Typography>
-          <img
-            style={{ marginRight: "20px" }}
-            alt="character"
-            src={character.image}
+        <View>
+         
+            <Text>Name: {character.name}</Text>
+          
+            <Text>Type: {character.type}</Text>
+         
+            <Text>Gender: {character.gender}</Text>
+        
+            <Text>Species: {character.species}</Text>
+         
+          <ImageBackground
+           
+           
+            source={{uri: character.image}}
           />
-        </Paper>
+        </View>
       ) : (
-        <p>No data.</p>
+        <Text>No data.</Text>
       )}
     </>
   );

@@ -61,7 +61,8 @@ const styles = StyleSheet.create({
   bgImage: {
       height: '100%',
       width: '100%',
-      justifyContent: 'flex-end'
+      justifyContent: 'flex-end',
+      
   },
   row: {
       flexDirection: 'row',

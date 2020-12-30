@@ -1,37 +1,31 @@
-import { Box, Grid, Switch } from "@material-ui/core";
+import React from 'react';
+import {Switch, Text, View} from 'react-native';
 
 interface Props {
-  checked: boolean;
-  handleSwitch: (
-    e: React.ChangeEvent<HTMLInputElement>,
-    checked: boolean
-  ) => void;
-    secondSearch: string;
+  checked?: boolean | undefined;
+  handleSwitch: () => void;
+  secondSearch: string;
 }
 
-const SwitchComponent: React.FC<Props> = ({ checked, handleSwitch, secondSearch }) => {
+const SwitchComponent: React.FC<Props> = ({
+  checked,
+  handleSwitch,
+  secondSearch,
+}) => {
   return (
-    <Box height={50}>
-      <Grid
-        item
-        xs={10}
-        component="label"
-        alignItems="center"
-        spacing={1}
-        container
-      >
-        <Grid item>{secondSearch}</Grid>
-        <Grid item>
-          <Switch
-            checked={checked}
-            onChange={handleSwitch}
-            color="secondary"
-            name="checkedName"
-          />
-        </Grid>
-        <Grid item>Name</Grid>
-      </Grid>
-    </Box>
+    <View  style={{flex:1, flexDirection: "row", alignSelf:"center", padding: 10}}>
+      <Text>{secondSearch}</Text>
+
+      <Switch 
+        value={checked}
+        onValueChange={handleSwitch}
+        trackColor={{ false: "#a8111b", true: "#81b0ff" }}
+        thumbColor="#f5dd4b"
+        ios_backgroundColor="#3e3e3e"
+      />
+
+      <Text>Name</Text>
+    </View>
   );
 };
 

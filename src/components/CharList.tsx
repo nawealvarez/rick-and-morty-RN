@@ -1,18 +1,27 @@
 import React, {useState} from 'react';
 import {ActivityIndicator, Text, View, FlatList} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import {Character} from '../interfaces';
 import CharCard from './CharCard';
 import SearchBox from './SearchBox';
+import SwitchComponent from './Switch';
 
 import {getAllCharacters} from '../resolvers/Characters';
+import { CharactersParamList, CharNavProps } from '../CharactersParamList';
+import { RootParamList } from '../RootParamList';
+import { createStackNavigator } from '@react-navigation/stack';
 
-interface Props {
-  characters: Character[];
-  loading: boolean;
-  error: Error;
-}
+// interface Props {
+//   characters: Character[];
+//   loading: boolean;
+//   error: Error; 
+// }
 
-const CharList: React.FC<Props> = () => {
+const Stack = createStackNavigator<RootParamList>();
+
+function CharList ({navigation}: CharNavProps<'CharList'>)  {
+  //const navigation = useNavigation();
+
   const [searchBy, setSearchBy] = useState('name');
   const [searchField, setSearchField] = useState<string>('');
   const [query, setQuery] = useState<string>('');
@@ -61,6 +70,16 @@ const CharList: React.FC<Props> = () => {
     }
   };
 
+  const handleSwitch = () => {
+    setSearchBy(searchBy === 'name' ? 'type' : 'name');
+  };
+
+  const handleOnPress = (character: Character) => {
+      navigation.navigate('CharDetail', {
+      id: character.id
+    });
+  };
+
   return (
     <View>
       {loading ? (
@@ -71,10 +90,24 @@ const CharList: React.FC<Props> = () => {
         <FlatList
           showsVerticalScrollIndicator={false}
           data={characters}
-          renderItem={({item}) => <CharCard key={item.id} character={item} />}
+          renderItem={({item}) => 
+            { return (
+            <CharCard key={item.id} character={item} 
+           
+            />)}}
           numColumns={2}
           ListHeaderComponent={
-            <SearchBox handleChange={handleChange} search={searchField} />
+            <View style={{backgroundColor: "#f5f5f5"}}>
+              <SearchBox
+                handleChange={handleChange}
+                search={searchField}
+              />
+              <SwitchComponent 
+                checked={searchBy === 'name'}
+                handleSwitch={handleSwitch}
+                secondSearch={'Type'}
+              />
+            </View>
           }
           stickyHeaderIndices={[0]}
           ListFooterComponent={renderFooter}
