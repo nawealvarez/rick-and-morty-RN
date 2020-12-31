@@ -6,6 +6,8 @@ const ALL_EPISODES = gql`
   query($name: String, $episode: String, $page: Int) {
   episodes(page: $page, filter: { name: $name, episode: $episode }) {
     info {
+      count
+      next
       pages
     }
       results {
@@ -25,14 +27,18 @@ const ONE_EPISODE= gql`
        air_date
        episode
        characters {
-           name         
+           id
+           name     
+           image    
             }
         }
   }
 `;
 
 export const getAllEpisodes = (by: string, search: string, page: number=1) => {
-  const results = useQuery<EpisodesQuery>(ALL_EPISODES, {variables: {[by]: search, page}});
+  const results = useQuery<EpisodesQuery>(ALL_EPISODES,
+     {variables: {[by]: search, page},
+     fetchPolicy: "network-only" });
   return results;
 }
 

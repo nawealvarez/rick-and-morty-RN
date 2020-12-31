@@ -4,23 +4,9 @@ import { AppParamList } from '../AppParamList';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { CharactersStack } from './CharactersStack';
 import { LocationsStack } from './LocationsStack';
+import { EpisodesStack } from './EpisodesStack';
 
 const Tabs = createBottomTabNavigator<AppParamList>();
-
-// function Characters() {
-//   return (
-//     <View>
-//       <Text>Characters</Text>
-//     </View>
-//   );
-// }
-// function Locations() {
-//   return (
-//     <View>
-//       <Text>Locations</Text>
-//     </View>
-//   );
-// }
 
 const AppTabs: React.FC = () => {
   return (
@@ -33,7 +19,10 @@ const AppTabs: React.FC = () => {
             iconName = 'people';
           } else if (route.name === 'Locations') {
             iconName = 'md-locate-sharp';
+          } else if (route.name === 'Episodes') {
+            iconName = 'ios-film-sharp'
           }
+
           if (iconName !== undefined) {
             return <Ionicons name={iconName} size={size} color={color} />;
           }
@@ -45,6 +34,7 @@ const AppTabs: React.FC = () => {
       }}>
       <Tabs.Screen name="Characters" component={CharactersStack} />
       <Tabs.Screen name="Locations" component={LocationsStack} />
+      <Tabs.Screen name="Episodes" component={EpisodesStack} />
     </Tabs.Navigator>
   );
 };

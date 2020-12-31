@@ -1,56 +1,84 @@
-import { Paper, Typography } from "@material-ui/core";
-import Spinner from '../components/Spinner';
+import React from 'react';
+import {
+  ActivityIndicator,
+  Dimensions,
+  ImageBackground,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { EpisodeNavProps } from '../EpisodesParamList';
+import { getOneEpisode } from '../resolvers/Episodes';
 
-import { getOneEpisode } from "../resolvers/Episodes";
+const {height} = Dimensions.get('screen');
 
-interface Props {
-  id: string;
-}
-
-const EpisodeDetail: React.FC<Props> = ({ id }) => {
-  const { data, loading, error } = getOneEpisode(id);
+function EpisodeDetail({route}: EpisodeNavProps<'EpisodeDetail'>) {
+  const {id} = route.params;
+  const {data, loading, error} = getOneEpisode(id);
   const episode = data?.episode;
 
   return (
-    <>
-      {loading ? (
-        <Spinner />
-      ) : error ? (
-        <p>Error.</p>
-      ) : episode ? (
-        <Paper
-          elevation={10}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            width: "50vh",
-            margin: "auto"
-          }}
-        >
-          <Typography variant="h3">
-            <b>{episode.name}</b>
-          </Typography>
-          <Typography variant="subtitle2">
-            <b>Release Date: {episode.air_date}</b>
-          </Typography>
-          <Typography variant="subtitle2">
-            <b>Episode: {episode.episode}</b>
-          </Typography>
-          <Typography variant="subtitle1">
-            <b>Characters:</b>
-          </Typography>
-          {episode.characters.slice(0, 5).map((character) => (
-            <Typography variant="subtitle2">
-              <b>{character.name}</b>
-            </Typography>
-          ))}
-        </Paper>
-      ) : (
-        <p>No data.</p>
-      )}
-    </>
+    <SafeAreaView>
+      <View style={{marginTop: 50}}>
+        {loading ? (
+          <ActivityIndicator />
+        ) : error ? (
+          <Text>Error.</Text>
+        ) : episode ? (
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <Text style={styles.text}>Name: {episode.name}</Text>
+            <Text style={styles.text}>Episode: {episode.episode}</Text>
+            <Text style={styles.text}>Air date: {episode.air_date}</Text>
+            <Text style={styles.text}>Characters:</Text>
+            {episode.characters.slice(0, 5).map((character) => (
+              character.name && (
+              <>
+                <ImageBackground
+                  source={{uri: character.image}}
+                  style={styles.bgImage}>
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.title}>{character.name}</Text>
+                  </View>
+                </ImageBackground>
+              </>) 
+            ))}
+          </ScrollView>
+        ) : (
+          <Text>No data.</Text>
+        )}
+      </View>
+    </SafeAreaView>
   );
-};
+}
+
+const styles = StyleSheet.create({
+  bgImage: {
+    height: height * 0.25,
+    width: '100%',
+    justifyContent: 'flex-end',
+    
+  },
+  text: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    alignSelf: 'center',
+    color: 'green',
+    marginHorizontal: 10,
+  },
+  titleContainer: {
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    paddingVertical: 5,
+    paddingHorizontal: 12,
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'lightgreen',
+    textAlign: 'center',
+  },
+});
 
 export default EpisodeDetail;

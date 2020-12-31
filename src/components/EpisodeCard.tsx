@@ -1,51 +1,68 @@
-import { useState } from "react";
-import Modal from "react-modal";
-import { Grid, Paper, Typography } from "@material-ui/core";
-import { Episode } from "../interfaces";
-import EpisodeDetail from "./EpisodeDetail";
-
-Modal.setAppElement("#__next");
+import React from 'react';
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {Episode} from '../interfaces';
 
 interface Props {
   episode: Episode;
+  onPress: () => void;
 }
 
-const EpisodeCard: React.FC<Props> = ({ episode }) => {
-  const [toggleModal, setToggleModal] = useState(false);
+const {width} = Dimensions.get('screen');
 
+const EpisodeCard: React.FC<Props> = ({episode, onPress}) => {
   return (
     <>
-      <Grid item>
-        <Paper
-          onClick={() => setToggleModal(true)}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            cursor: "pointer",
-          }}
-        >
-          <Typography variant="subtitle1">
-            <b>{episode.name}</b>
-          </Typography>
-          <Typography variant="subtitle2">
-            <b>{episode.episode}</b>
-          </Typography>
-        </Paper>
-      </Grid>
-
-      <Modal
-        isOpen={toggleModal}
-        onRequestClose={() => setToggleModal(false)}
-        shouldCloseOnOverlayClick={false}
-      >
-        <button style={{ color: "red" }} onClick={() => setToggleModal(false)}>
-          x
-        </button>
-        <EpisodeDetail id={episode.id} />
-      </Modal>
+      <TouchableOpacity onPress={onPress}>
+        <View style={styles.card}>
+          <Text style={styles.title} numberOfLines={2}>
+            {episode.name}
+          </Text>
+          <Text style={styles.text}> Dimension:</Text>
+          <Text style={styles.text} numberOfLines={2}>
+            {episode.episode}
+          </Text>
+        </View>
+      </TouchableOpacity>
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  card: {
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 6,
+    shadowOpacity: 0.26,
+    elevation: 5,
+    backgroundColor: 'lightblue',
+    padding: 20,
+    borderRadius: 10,
+    height: 140,
+    width: width * 0.4,
+    justifyContent: 'center',
+    margin: width * 0.05,
+  },
+  text: {
+    color: 'red',
+    textAlign: 'center',
+    fontSize: 14,
+  },
+  title: {
+    textAlign: 'center',
+    color: 'red',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+
+});
 
 export default EpisodeCard;

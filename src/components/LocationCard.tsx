@@ -63,41 +63,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 
-  // item: {
-  //   height: '100%',
-  //   width: '100%',
-  //   padding: 10,
-  //   marginVertical: 5,
-  //   backgroundColor: '#f5f5f5',
-  //   borderRadius: 30,
-  // },
-  // row: {
-  //   flexDirection: 'row',
-  //   height: '100%',
-  // },
-  // titleContainer: {
-  //   backgroundColor: 'rgba(0,0,0,0.5)',
-  //   paddingVertical: 5,
-  //   paddingHorizontal: 12,
-  // },
-  // title: {
-  //   fontSize: 12,
-  //   color: 'white',
-  //   textAlign: 'center',
-  // },
-  // card: {
-  //   shadowColor: 'black',
-  //   shadowOffset: {
-  //     width: 0,
-  //     height: 2,
-  //   },
-  //   elevation: 5,
-  // },
-  // gridItem: {
-  //   flex: 1,
-  //   margin: 15,
-  //   height: 150,
-  // },
 });
 
 export default LocationCard;
