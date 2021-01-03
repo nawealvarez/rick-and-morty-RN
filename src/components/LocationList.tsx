@@ -8,6 +8,7 @@ import {errorHandler} from '../utils';
 
 import {getAllLocations} from '../resolvers/Locations';
 import { LocNavProps } from '../LocationsParamList';
+import ErrorComponent from './Error';
 
 function LocationList ({navigation}: LocNavProps<'LocationList'>)  {
 
@@ -74,7 +75,7 @@ function LocationList ({navigation}: LocNavProps<'LocationList'>)  {
       {loading ? (
         <ActivityIndicator animating size="large" />
       ) : error ? (
-        <Text style={{color: "red", textAlign: "center"}}>{errorHandler(error)}</Text>
+        <ErrorComponent error={error} handleChange={handleChange} />
       ) : locations && locations.length > 0 ? (
         <FlatList
           showsVerticalScrollIndicator={false}

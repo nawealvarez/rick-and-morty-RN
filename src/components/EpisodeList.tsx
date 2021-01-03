@@ -8,6 +8,7 @@ import { EpisodeNavProps } from '../EpisodesParamList';
 import { getAllEpisodes } from '../resolvers/Episodes';
 import { Episode } from '../interfaces';
 import EpisodeCard from './EpisodeCard';
+import ErrorComponent from './Error';
 
 function EpisodeList ({navigation}: EpisodeNavProps<'EpisodeList'>)  {
 
@@ -74,7 +75,7 @@ function EpisodeList ({navigation}: EpisodeNavProps<'EpisodeList'>)  {
       {loading ? (
         <ActivityIndicator animating size="large" />
       ) : error ? (
-        <Text style={{color: "red", textAlign: "center"}}>{errorHandler(error)}</Text>
+        <ErrorComponent error={error} handleChange={handleChange} />
       ) : episodes && episodes.length > 0 ? (
         <FlatList
           showsVerticalScrollIndicator={false}

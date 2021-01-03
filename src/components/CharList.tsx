@@ -4,10 +4,10 @@ import {Character} from '../interfaces';
 import CharCard from './CharCard';
 import SearchBox from './SearchBox';
 import SwitchComponent from './Switch';
-import {errorHandler} from '../utils';
 
 import {getAllCharacters} from '../resolvers/Characters';
 import { CharNavProps } from '../CharactersParamList';
+import ErrorComponent from './Error';
 
 function CharList ({navigation}: CharNavProps<'CharList'>)  {
 
@@ -71,11 +71,11 @@ function CharList ({navigation}: CharNavProps<'CharList'>)  {
 
   return (
     <View>
-      {loading ? (
+      {loading ? 
         <ActivityIndicator animating size="large" />
-      ) : error ? (
-        <Text style={{color: "red", textAlign: "center"}}>{errorHandler(error)}</Text>
-      ) : characters && characters.length > 0 ? (
+       : error ? 
+       <ErrorComponent error={error} handleChange={handleChange} />
+       : characters && characters.length > 0 ? (
         <FlatList
           showsVerticalScrollIndicator={false}
           data={characters}

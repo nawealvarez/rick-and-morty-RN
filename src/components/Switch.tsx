@@ -1,5 +1,5 @@
 import React from 'react';
-import {Switch, Text, View} from 'react-native';
+import {StyleSheet, Switch, Text, View} from 'react-native';
 
 interface Props {
   checked: boolean;
@@ -13,20 +13,32 @@ const SwitchComponent: React.FC<Props> = ({
   secondSearch,
 }) => {
   return (
-    <View  style={{flex:1, flexDirection: "row", alignSelf:"center", padding: 10}}>
-      <Text>{secondSearch}</Text>
+    <View style={styles.container}>
+      <Text style={styles.text}>{secondSearch}</Text>
 
-      <Switch 
+      <Switch
         value={checked}
         onValueChange={handleSwitch}
-        trackColor={{ false: "#a8111b", true: "#81b0ff" }}
-        thumbColor="#f5dd4b"
+        trackColor={{false: '#a8111b', true: '#6155a6'}}
+        thumbColor="#ffabe1"
         ios_backgroundColor="#3e3e3e"
       />
 
-      <Text>Name</Text>
+      <Text style={styles.text}>Name</Text>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1, 
+    flexDirection: 'row', 
+    alignSelf: 'center', 
+    padding: 10},
+  text: {
+    fontSize: 14, 
+    padding: 5
+  }
+});
 
 export default SwitchComponent;

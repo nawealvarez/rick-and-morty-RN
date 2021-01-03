@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     shadowOpacity: 0.26,
     elevation: 5,
-    backgroundColor: 'lightblue',
+    backgroundColor: '#16c79a',
     padding: 20,
     borderRadius: 10,
     height: 140,
