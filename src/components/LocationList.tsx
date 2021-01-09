@@ -4,39 +4,23 @@ import { Location } from '../interfaces';
 import LocationCard from './LocationCard';
 import SearchBox from './SearchBox';
 import SwitchComponent from './Switch';
-import {errorHandler} from '../utils';
 
 import {getAllLocations} from '../resolvers/Locations';
 import { LocNavProps } from '../LocationsParamList';
 import ErrorComponent from './Error';
+import { useSwitch } from '../hooks/switch';
+import { useSearch } from '../hooks/search';
 
 function LocationList ({navigation}: LocNavProps<'LocationList'>)  {
 
-  const [searchBy, setSearchBy] = useState('name');
-  const [searchField, setSearchField] = useState<string>('');
-  const [query, setQuery] = useState<string>('');
+  const switchToggle = useSwitch();
+  const search = useSearch();
+
   const [loadingMore, setLoadingMore] = useState<boolean>(false);
-
-  const {data, fetchMore, loading, error} = getAllLocations(searchBy, query);
-
+  const {data, fetchMore, loading, error} = getAllLocations(switchToggle.searchBy, search.query);
   const queryData = data && data.locations;
   const locations = queryData ? queryData.results : null;
   const canLoadMore = queryData && queryData.info.next && !loadingMore;
-
-  const renderFooter = () => {
-    if (data && loadingMore) {
-      return <ActivityIndicator animating/>;
-    } else {
-      return null;
-    }
-  };
-
-  const handleChange = (text: string) => {
-    setSearchField(text);
-    if (text.length > 2 || text === '') {
-      setQuery(text);
-    }
-  };
 
   const handleLoadMore = () => {
     if (fetchMore && canLoadMore) {
@@ -60,10 +44,6 @@ function LocationList ({navigation}: LocNavProps<'LocationList'>)  {
     }
   };
 
-  const handleSwitch = () => {
-    setSearchBy(searchBy === 'name' ? 'type' : 'name');
-  };
-
   const handleOnPress = (location: Location) => {
       navigation.navigate('LocationDetail', {
       id: location.id
@@ -75,7 +55,7 @@ function LocationList ({navigation}: LocNavProps<'LocationList'>)  {
       {loading ? (
         <ActivityIndicator animating size="large" />
       ) : error ? (
-        <ErrorComponent error={error} handleChange={handleChange} />
+        <ErrorComponent error={error} handleChange={search.handleChange} />
       ) : locations && locations.length > 0 ? (
         <FlatList
           showsVerticalScrollIndicator={false}
@@ -89,18 +69,18 @@ function LocationList ({navigation}: LocNavProps<'LocationList'>)  {
           ListHeaderComponent={
             <View style={{backgroundColor: "#f5f5f5"}}>
               <SearchBox
-                handleChange={handleChange}
-                search={searchField}
+                handleChange={search.handleChange}
+                search={search.searchField}
               />
               <SwitchComponent 
-                checked={searchBy === 'name'}
-                handleSwitch={handleSwitch}
+                checked={switchToggle.searchBy === 'name'}
+                handleSwitch={switchToggle.handleSwitch}
                 secondSearch={'Type'}
               />
             </View>
           }
           stickyHeaderIndices={[0]}
-          ListFooterComponent={renderFooter}
+          ListFooterComponent={data && loadingMore ? <ActivityIndicator animating/> : null}
           keyExtractor={(item, index) => `${index}`}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={0}

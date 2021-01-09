@@ -2,41 +2,25 @@ import React, {useState} from 'react';
 import {ActivityIndicator, Text, View, FlatList} from 'react-native';
 import SearchBox from './SearchBox';
 import SwitchComponent from './Switch';
-import {errorHandler} from '../utils';
 
 import { EpisodeNavProps } from '../EpisodesParamList';
 import { getAllEpisodes } from '../resolvers/Episodes';
 import { Episode } from '../interfaces';
 import EpisodeCard from './EpisodeCard';
 import ErrorComponent from './Error';
+import { useSwitch } from '../hooks/switch';
+import { useSearch } from '../hooks/search';
 
 function EpisodeList ({navigation}: EpisodeNavProps<'EpisodeList'>)  {
 
-  const [searchBy, setSearchBy] = useState('name');
-  const [searchField, setSearchField] = useState<string>('');
-  const [query, setQuery] = useState<string>('');
+  const switchToggle = useSwitch();
+  const search = useSearch();
+  
   const [loadingMore, setLoadingMore] = useState<boolean>(false);
-
-  const {data, fetchMore, loading, error} = getAllEpisodes(searchBy, query);
-
+  const {data, fetchMore, loading, error} = getAllEpisodes(switchToggle.searchBy, search.query)
   const queryData = data && data.episodes;
   const episodes = queryData ? queryData.results : null;
   const canLoadMore = queryData && queryData.info.next && !loadingMore;
-
-  const renderFooter = () => {
-    if (data && loadingMore) {
-      return <ActivityIndicator animating/>;
-    } else {
-      return null;
-    }
-  };
-
-  const handleChange = (text: string) => {
-    setSearchField(text);
-    if (text.length > 2 || text === '') {
-      setQuery(text);
-    }
-  };
 
   const handleLoadMore = () => {
     if (fetchMore && canLoadMore) {
@@ -60,10 +44,6 @@ function EpisodeList ({navigation}: EpisodeNavProps<'EpisodeList'>)  {
     }
   };
 
-  const handleSwitch = () => {
-    setSearchBy(searchBy === 'name' ? 'episode' : 'name');
-  };
-
   const handleOnPress = (episode: Episode) => {
       navigation.navigate('EpisodeDetail', {
       id: episode.id
@@ -75,7 +55,7 @@ function EpisodeList ({navigation}: EpisodeNavProps<'EpisodeList'>)  {
       {loading ? (
         <ActivityIndicator animating size="large" />
       ) : error ? (
-        <ErrorComponent error={error} handleChange={handleChange} />
+        <ErrorComponent error={error} handleChange={search.handleChange} />
       ) : episodes && episodes.length > 0 ? (
         <FlatList
           showsVerticalScrollIndicator={false}
@@ -89,18 +69,18 @@ function EpisodeList ({navigation}: EpisodeNavProps<'EpisodeList'>)  {
           ListHeaderComponent={
             <View style={{backgroundColor: "#f5f5f5"}}>
               <SearchBox
-                handleChange={handleChange}
-                search={searchField}
+                handleChange={search.handleChange}
+                search={search.searchField}
               />
               <SwitchComponent 
-                checked={searchBy === 'name'}
-                handleSwitch={handleSwitch}
+                checked={switchToggle.searchBy === 'name'}
+                handleSwitch={switchToggle.handleSwitch}
                 secondSearch={'Episode'}
               />
             </View>
           }
           stickyHeaderIndices={[0]}
-          ListFooterComponent={renderFooter}
+          ListFooterComponent={data && loadingMore ? <ActivityIndicator animating/> : null}
           keyExtractor={(item, index) => `${index}`}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={0}

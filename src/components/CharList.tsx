@@ -8,34 +8,20 @@ import SwitchComponent from './Switch';
 import {getAllCharacters} from '../resolvers/Characters';
 import { CharNavProps } from '../CharactersParamList';
 import ErrorComponent from './Error';
+import { useSwitch } from '../hooks/switch';
+import { useSearch } from '../hooks/search';
+
 
 function CharList ({navigation}: CharNavProps<'CharList'>)  {
 
-  const [searchBy, setSearchBy] = useState('name');
-  const [searchField, setSearchField] = useState<string>('');
-  const [query, setQuery] = useState<string>('');
+  const switchToggle = useSwitch();
+  const search = useSearch();
+  
   const [loadingMore, setLoadingMore] = useState<boolean>(false);
-
-  const {data, fetchMore, loading, error} = getAllCharacters(searchBy, query);
-
+  const {data, fetchMore, loading, error} = getAllCharacters(switchToggle.searchBy, search.query);
   const queryData = data && data.characters;
   const characters = queryData ? queryData.results : null;
   const canLoadMore = queryData && queryData.info.next && !loadingMore;
-
-  const renderFooter = () => {
-    if (data && loadingMore) {
-      return <ActivityIndicator animating/>;
-    } else {
-      return null;
-    }
-  };
-
-  const handleChange = (text: string) => {
-    setSearchField(text);
-    if (text.length > 2 || text === '') {
-      setQuery(text);
-    }
-  };
 
   const handleLoadMore = () => {
     if (fetchMore && canLoadMore) {
@@ -59,10 +45,6 @@ function CharList ({navigation}: CharNavProps<'CharList'>)  {
     }
   };
 
-  const handleSwitch = () => {
-    setSearchBy(searchBy === 'name' ? 'type' : 'name');
-  };
-
   const handleOnPress = (character: Character) => {
       navigation.navigate('CharDetail', {
       id: character.id
@@ -74,7 +56,7 @@ function CharList ({navigation}: CharNavProps<'CharList'>)  {
       {loading ? 
         <ActivityIndicator animating size="large" />
        : error ? 
-       <ErrorComponent error={error} handleChange={handleChange} />
+       <ErrorComponent error={error} handleChange={search.handleChange} />
        : characters && characters.length > 0 ? (
         <FlatList
           showsVerticalScrollIndicator={false}
@@ -88,18 +70,18 @@ function CharList ({navigation}: CharNavProps<'CharList'>)  {
           ListHeaderComponent={
             <View style={{backgroundColor: "#f5f5f5"}}>
               <SearchBox
-                handleChange={handleChange}
-                search={searchField}
+                handleChange={search.handleChange}
+                search={search.searchField}
               />
               <SwitchComponent 
-                checked={searchBy === 'name'}
-                handleSwitch={handleSwitch}
+                checked={switchToggle.searchBy === 'name'}
+                handleSwitch={switchToggle.handleSwitch}
                 secondSearch={'Type'}
               />
             </View>
           }
           stickyHeaderIndices={[0]}
-          ListFooterComponent={renderFooter}
+          ListFooterComponent={data && loadingMore ? <ActivityIndicator animating/> : null}
           keyExtractor={(item, index) => `${index}`}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={0}
