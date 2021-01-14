@@ -1,19 +1,16 @@
 import React, {useState} from 'react';
 import {ActivityIndicator, Text, View, FlatList} from 'react-native';
 import { Location } from '../interfaces';
-import LocationCard from './LocationCard';
-import SearchBox from './SearchBox';
-import SwitchComponent from './Switch';
-
+import { LocationCard, SearchBox, SwitchComponent, ErrorComponent } from '../components'
 import {getAllLocations} from '../resolvers/Locations';
 import { LocNavProps } from '../LocationsParamList';
-import ErrorComponent from './Error';
 import { useSwitch } from '../hooks/switch';
 import { useSearch } from '../hooks/search';
 
 function LocationList ({navigation}: LocNavProps<'LocationList'>)  {
+  const secondSearch = "type";
 
-  const switchToggle = useSwitch();
+  const switchToggle = useSwitch(secondSearch);
   const search = useSearch();
 
   const [loadingMore, setLoadingMore] = useState<boolean>(false);
@@ -75,7 +72,7 @@ function LocationList ({navigation}: LocNavProps<'LocationList'>)  {
               <SwitchComponent 
                 checked={switchToggle.searchBy === 'name'}
                 handleSwitch={switchToggle.handleSwitch}
-                secondSearch={'Type'}
+                secondSearch={secondSearch}
               />
             </View>
           }

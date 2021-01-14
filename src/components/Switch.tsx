@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, Switch, Text, View} from 'react-native';
+import _ from 'lodash';
 
 interface Props {
   checked: boolean;
@@ -14,7 +15,7 @@ const SwitchComponent: React.FC<Props> = ({
 }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>{secondSearch}</Text>
+      <Text style={styles.text}>{_. capitalize(secondSearch)}</Text>
 
       <Switch
         value={checked}

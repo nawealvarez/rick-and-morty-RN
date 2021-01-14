@@ -1,20 +1,16 @@
 import React, {useState} from 'react';
 import {ActivityIndicator, Text, View, FlatList} from 'react-native';
 import {Character} from '../interfaces';
-import CharCard from './CharCard';
-import SearchBox from './SearchBox';
-import SwitchComponent from './Switch';
-
+import { CharCard, ErrorComponent, SearchBox, SwitchComponent } from '../components';
 import {getAllCharacters} from '../resolvers/Characters';
 import { CharNavProps } from '../CharactersParamList';
-import ErrorComponent from './Error';
 import { useSwitch } from '../hooks/switch';
 import { useSearch } from '../hooks/search';
 
-
 function CharList ({navigation}: CharNavProps<'CharList'>)  {
+  const secondSearch = "type";
 
-  const switchToggle = useSwitch();
+  const switchToggle = useSwitch(secondSearch);
   const search = useSearch();
   
   const [loadingMore, setLoadingMore] = useState<boolean>(false);
@@ -76,7 +72,7 @@ function CharList ({navigation}: CharNavProps<'CharList'>)  {
               <SwitchComponent 
                 checked={switchToggle.searchBy === 'name'}
                 handleSwitch={switchToggle.handleSwitch}
-                secondSearch={'Type'}
+                secondSearch={secondSearch}
               />
             </View>
           }

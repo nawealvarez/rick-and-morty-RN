@@ -1,19 +1,16 @@
 import React, {useState} from 'react';
 import {ActivityIndicator, Text, View, FlatList} from 'react-native';
-import SearchBox from './SearchBox';
-import SwitchComponent from './Switch';
-
+import { EpisodeCard, ErrorComponent, SearchBox, SwitchComponent } from '../components';
 import { EpisodeNavProps } from '../EpisodesParamList';
 import { getAllEpisodes } from '../resolvers/Episodes';
 import { Episode } from '../interfaces';
-import EpisodeCard from './EpisodeCard';
-import ErrorComponent from './Error';
 import { useSwitch } from '../hooks/switch';
 import { useSearch } from '../hooks/search';
 
 function EpisodeList ({navigation}: EpisodeNavProps<'EpisodeList'>)  {
+  const secondSearch = "episode";
 
-  const switchToggle = useSwitch();
+  const switchToggle = useSwitch(secondSearch);
   const search = useSearch();
   
   const [loadingMore, setLoadingMore] = useState<boolean>(false);
@@ -75,7 +72,7 @@ function EpisodeList ({navigation}: EpisodeNavProps<'EpisodeList'>)  {
               <SwitchComponent 
                 checked={switchToggle.searchBy === 'name'}
                 handleSwitch={switchToggle.handleSwitch}
-                secondSearch={'Episode'}
+                secondSearch={secondSearch}
               />
             </View>
           }
