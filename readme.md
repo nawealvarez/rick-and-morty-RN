@@ -1,7 +1,4 @@
 # Rick and Morty React Native App
-&nbsp;
-&nbsp;
-## [Link to Youtube demo](https://youtu.be/Dt5JlxrZ_hQ)
 
 &nbsp;
 &nbsp;
